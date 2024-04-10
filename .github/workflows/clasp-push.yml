@@ -21,5 +21,8 @@ jobs:
       - name: Install CLASP
         run: npm install -g @google/clasp
 
+      - name: Authenticate with Service Account
+        run: echo "$SERVICE_ACCOUNT_KEY" > key.json && gcloud auth activate-service-account --key-file=key.json
+
       - name: Push to Apps Script
         run: clasp push
