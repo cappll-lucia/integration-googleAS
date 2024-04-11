@@ -38,7 +38,7 @@ jobs:
       - name: Debug credentials
         run: cat credentials.json
 
-      - name: CLASP Push
+      - name: CLASP push -f
         uses: daikikatsuragawa/clasp-action@v1.1.0
         with:
           clientId: ${{ secrets.GOOGLE_CLIENT_ID }}
