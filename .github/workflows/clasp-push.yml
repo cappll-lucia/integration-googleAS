@@ -41,9 +41,6 @@ jobs:
       - name: CLASP Push
         uses: daikikatsuragawa/clasp-action@v1.1.0
         with:
-          accessToken: ${{ steps.authenticate.outputs.access_token }}
-          idToken: ${{ steps.authenticate.outputs.id_token }}
-          refreshToken: ${{ steps.authenticate.outputs.refresh_token }}
           clientId: ${{ secrets.GOOGLE_CLIENT_ID }}
           clientSecret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           scriptId: ${{ secrets.SCRIPT_ID }}
