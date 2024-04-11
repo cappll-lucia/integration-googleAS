@@ -10,7 +10,7 @@ jobs:
     if: github.event.pull_request.merged == true
 
     env:
-      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      ENCODED_SERVICE_ACCOUNT_KEY: ${{ secrets.ENCODED_SERVICE_ACCOUNT_KEY }}
 
     steps:
       - name: Checkout code
@@ -25,9 +25,7 @@ jobs:
         run: npm install -g @google/clasp
 
       - name: Decode Service Account Key
-        run: |
-          echo "$SERVICE_ACCOUNT_KEY" > key.json.base64
-          base64 -d key.json.base64 > key.json
+        run: echo "${{ env.ENCODED_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
 
       - name: Authenticate with Service Account
         run: gcloud auth activate-service-account --key-file=key.json
