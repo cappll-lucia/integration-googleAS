@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
 
-    env:
-      ENCODED_SERVICE_ACCOUNT_KEY: ${{ secrets.ENCODED_SERVICE_ACCOUNT_KEY }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,11 +21,10 @@ jobs:
       - name: Install CLASP
         run: npm install -g @google/clasp
 
-      - name: Decode Service Account Key
-        run: echo "${{ env.ENCODED_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
-
-      - name: Authenticate with Service Account
-        run: gcloud auth activate-service-account --key-file=key.json
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: Push to Apps Script
         run: clasp push
