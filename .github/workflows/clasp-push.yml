@@ -25,6 +25,12 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: Save tokens as secrets
+        run: |
+          echo "GOOGLE_ACCESS_TOKEN=${{ steps.authenticate.outputs.access_token }}" >> $GITHUB_ENV
+          echo "GOOGLE_ID_TOKEN=${{ steps.authenticate.outputs.id_token }}" >> $GITHUB_ENV
+          echo "GOOGLE_REFRESH_TOKEN=${{ steps.authenticate.outputs.refresh_token }}" >> $GITHUB_ENV
       
       - name: Set GOOGLE_APPLICATION_CREDENTIALS
         run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > credentials.json && export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/credentials.json
