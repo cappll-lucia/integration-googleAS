@@ -33,4 +33,4 @@ jobs:
         run: cat credentials.json
 
       - name: Push to Apps Script
-        run: clasp push --creds credentials.json
+        run: clasp push
