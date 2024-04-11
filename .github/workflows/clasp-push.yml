@@ -26,5 +26,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
+      - name: Debug credentials
+        run: cat credentials.json
+
       - name: Push to Apps Script
-        run: clasp push
+        run: clasp push --creds credentials.json
