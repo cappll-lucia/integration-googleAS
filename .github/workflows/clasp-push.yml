@@ -25,6 +25,12 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: Save tokens as secrets
+        run: |
+          echo "GOOGLE_ACCESS_TOKEN=${{ steps.authenticate.outputs.access_token }}" >> $GITHUB_ENV
+          echo "GOOGLE_ID_TOKEN=${{ steps.authenticate.outputs.id_token }}" >> $GITHUB_ENV
+          echo "GOOGLE_REFRESH_TOKEN=${{ steps.authenticate.outputs.refresh_token }}" >> $GITHUB_ENV
       
       - name: Set GOOGLE_APPLICATION_CREDENTIALS
         run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > credentials.json && export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/credentials.json
@@ -32,5 +38,13 @@ jobs:
       - name: Debug credentials
         run: cat credentials.json
 
-      - name: Push to Apps Script
-        run: clasp push
+      - name: CLASP Push
+        uses: daikikatsuragawa/clasp-action@v1.1.0
+        with:
+          accessToken: ${{ secrets.GOOGLE_ACCESS_TOKEN }}
+          idToken: ${{ secrets.GOOGLE_ID_TOKEN }}
+          refreshToken: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          clientId: ${{ secrets.GOOGLE_CLIENT_ID }}
+          clientSecret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          scriptId: ${{ secrets.SCRIPT_ID }}
+          command: 'push'
