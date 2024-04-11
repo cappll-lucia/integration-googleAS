@@ -24,8 +24,13 @@ jobs:
       - name: Install CLASP
         run: npm install -g @google/clasp
 
+      - name: Decode Service Account Key
+        run: |
+          echo "$SERVICE_ACCOUNT_KEY" > key.json.base64
+          base64 -d key.json.base64 > key.json
+
       - name: Authenticate with Service Account
-        run: echo "${{ secrets.SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json && gcloud auth activate-service-account --key-file=key.json
+        run: gcloud auth activate-service-account --key-file=key.json
 
       - name: Push to Apps Script
         run: clasp push
